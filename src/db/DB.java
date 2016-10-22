@@ -46,17 +46,15 @@ public class DB {
 		}
 	}
 
-	public boolean addEvent(Event event) {
+	public int addEvent(Event event) {
 		em.getTransaction().begin();
 
 		em.persist(event);
+		em.flush();
+		int id = event.getId();
 		em.getTransaction().commit();
-
-		if (em.contains(event)) {
-			return true;
-		} else {
-			return false;
-		}
+		return id;
+		
 	}
 
 	public User checkUser(String email, String password) {
@@ -103,7 +101,7 @@ public class DB {
 //		Event event = new Event();
 //		event.setUser(db.getUser("anaelshomrai@gmail.com"));
 //		event.setDescription("Important");
-//		event.setTitle("Do Homework");
+//		event.setTitle("Do");
 //		Calendar dateStart = Calendar.getInstance();
 //		event.setDateStart(dateStart);
 //		Calendar dateEnd = Calendar.getInstance();
@@ -112,7 +110,7 @@ public class DB {
 //		dateEnd.set(Calendar.MILLISECOND, 0);
 //		dateEnd.set(Calendar.SECOND, 0);
 //		event.setDateEnd(dateEnd);
-//		
+
 		
 //		List<Event> events = new ArrayList<>();
 //		Event event = new Event();
@@ -136,6 +134,7 @@ public class DB {
 //		db.insertUser(user);
 		
 //		db.addEvent(event);
+//		db.updateEvent(event);
 
 	}
 

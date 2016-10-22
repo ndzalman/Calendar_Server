@@ -40,12 +40,11 @@ public class EventsServices {
 		
 		Gson gson = new Gson();
 		Event event = gson.fromJson(eventJSON.toString(), Event.class);
-		boolean result = db.addEvent(event);
-		if(result) {
-			return "OK";
-		} else {
-			return "notOk";
-		}
+		String id = "-1";
+		id = String.valueOf(db.addEvent(event));
+		return id;
+
+		
 	}
 	
 	@POST
