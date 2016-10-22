@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +22,7 @@ public class User {
 
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column( name = "Id", nullable=false)
+	@Column( name = "USER_ID", nullable=false)
     private int id;
 	
 	@Column( name = "user_name", nullable=false, length=15)
@@ -36,7 +37,7 @@ public class User {
 	@Temporal(TemporalType.DATE) // for saving without time
     private Calendar dateOfBirth;
     
-	@OneToMany(cascade=CascadeType.PERSIST)
+	@OneToMany(cascade=CascadeType.ALL,mappedBy="user")
     private List<Event> events = new ArrayList<>();
 
     public User(){
