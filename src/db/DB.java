@@ -3,6 +3,7 @@ package db;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Vector;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -85,6 +86,19 @@ public class DB {
 		return user;
 
 	}
+	
+	public List<Event> getEventById(int id) {
+		Query query = em.createQuery("select e from Event e where e.user.id = :id");
+		query.setParameter("id", id);
+
+		List<Event> events = null;
+		try {
+			events = (List<Event>)query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+		return events;
+	}
 
 	public static void main(String[] args) {
 		DB db = DB.getInstance();
@@ -157,6 +171,12 @@ public class DB {
 		em.remove(e);
 		em.getTransaction().commit();
 		return true;
+	}
+
+	public List<Event> getEvents() {
+		Query query = em.createQuery("select e from Event e");
+		Vector<Event> categories = (Vector<Event>)query.getResultList();
+		return categories;	
 	}
 
 }

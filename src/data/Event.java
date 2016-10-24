@@ -96,9 +96,6 @@ public class Event {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
-    
 
 	public User getUser() {
 		return user;
@@ -132,6 +129,7 @@ public class Event {
                 ", dateStart=" + dateStart +
                 ", dateEnd=" + dateEnd +
                 ", description='" + description + '\'' +
+                ", user id=" + user.getId() +
                 '}';
     }
 	

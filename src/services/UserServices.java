@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -14,8 +15,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import data.Event;
 import data.User;
 import db.DB;
 
@@ -55,10 +60,55 @@ public class UserServices {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/checkUser")
 	public String checkUser( @QueryParam("email") String email, @QueryParam("password") String password ){
-		System.out.println("in checkUser method");
-		User user = db.checkUser(email,password);
-		Gson gson = new Gson();
-		return gson.toJson(user);
+		System.out.println("in checkUser method " + email + " " + password);
+		User user = db.checkUser(email,password);		
+		Gson gson = new GsonBuilder()
+				.setExclusionStrategies(new ExclusionStrategy() {
+					
+					@Override
+					public boolean shouldSkipField(FieldAttributes f) {
+			            return false;			            
+					}
+					
+					@Override
+					public boolean shouldSkipClass(Class<?> clazz) {
+			            return (clazz == Event.class);
+					}
+				})
+				.serializeNulls()
+				.create();
+		
+		String jsonString = gson.toJson(user);
+		System.out.println(jsonString);
+		return jsonString;
+	}
+	
+	// web method
+	@POST
+	@Path("/validateUser")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String validateUser(@FormParam("email") String email,@FormParam("password")String password) {
+		System.out.println("in checkUser method " + email + " " + password);
+		User user = db.checkUser(email,password);		
+		Gson gson = new GsonBuilder()
+				.setExclusionStrategies(new ExclusionStrategy() {
+					
+					@Override
+					public boolean shouldSkipField(FieldAttributes f) {
+			            return false;			            
+					}
+					
+					@Override
+					public boolean shouldSkipClass(Class<?> clazz) {
+			            return (clazz == Event.class);
+					}
+				})
+				.serializeNulls()
+				.create();
+		
+		String jsonString = gson.toJson(user);
+		System.out.println(jsonString);
+		return jsonString;
 	}
 	
 	@GET

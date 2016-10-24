@@ -1,5 +1,6 @@
 package data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -18,7 +19,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table (name = "users")
-public class User {
+public class User{ 
 
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -99,7 +100,11 @@ public class User {
         this.events.remove(event);
     }
 
-    @Override
+    public int getId() {
+		return id;
+	}
+
+	@Override
     public String toString() {
         return "User{" +
                 "id=" + id +
