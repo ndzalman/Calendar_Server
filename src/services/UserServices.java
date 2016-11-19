@@ -29,6 +29,11 @@ public class UserServices {
 	
 	private DB db = DB.getInstance();
 	
+	/**
+	 * The service inserts the given user
+	 * @param input
+	 * @return
+	 */
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
@@ -56,6 +61,12 @@ public class UserServices {
 		}
 	}
 	
+	/**
+	 * This service check if the user with the given email and password exist
+	 * @param email the email of the user
+	 * @param password the password of the user
+	 * @return a json represent the user if found, else null
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/checkUser")
@@ -84,6 +95,12 @@ public class UserServices {
 	}
 	
 	// web method
+	/**
+	 * This service check if the user with the given email and password exist
+	 * @param email the email of the user
+	 * @param password the password of the user
+	 * @return a json represent the user if found, else null
+	 */
 	@POST
 	@Path("/validateUser")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -111,14 +128,4 @@ public class UserServices {
 		return jsonString;
 	}
 	
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/hello")
-	public String getHello() {
-		System.out.println("in hello method");
-		return "Hello";
-		
-	}
-	
-
 }

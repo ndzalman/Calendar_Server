@@ -1,7 +1,5 @@
 package db;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
 
@@ -14,13 +12,32 @@ import javax.persistence.Query;
 import data.Event;
 import data.User;
 
+/**
+ * This class responsible for the interaction with the date base. this class is a singleton.
+ * @author Nadav
+ *
+ */
 public class DB {
 
+	/**
+	 * Entity manger Factory
+	 */
 	private EntityManagerFactory emf;
+	
+	/**
+	 * Entity Manger
+	 */
 	private EntityManager em;
 
+	/**
+	 * The instance of this class
+	 */
 	private static DB db;
 
+	/**
+	 * Returns the instance of this class.
+	 * @return the instance of this class
+	 */
 	public static DB getInstance() {
 		if (db == null) {
 			return new DB();
@@ -29,11 +46,19 @@ public class DB {
 		}
 	}
 
+	/**
+	 * Constructor of this class initialize one instance of this class.
+	 */
 	private DB() {
 		emf = Persistence.createEntityManagerFactory("CalendarServer");
 		em = emf.createEntityManager();
 	}
 
+	/**
+	 * This method inserts user to the users table
+	 * @param user the user to insert
+	 * @return a boolean represent if the user inserted successfully.
+	 */
 	public boolean insertUser(User user) {
 		em.getTransaction().begin();
 
@@ -47,17 +72,26 @@ public class DB {
 		}
 	}
 
+	/**
+	 * This method add event the events table
+	 * @param event the event to insert
+	 * @return the if of the new event
+	 */
 	public int addEvent(Event event) {
 		em.getTransaction().begin();
-
 		em.persist(event);
 		em.flush();
 		int id = event.getId();
 		em.getTransaction().commit();
 		return id;
-		
 	}
 
+	/**
+	 * This method check if the user with this email and password exist in the data base
+	 * @param email the email of the user
+	 * @param password the password of the user
+	 * @return the user if found, else null
+	 */
 	public User checkUser(String email, String password) {
 		Query query = em.createQuery("select u from User u where u.email = :email and u.password = :password");
 		query.setParameter("email", email);
@@ -73,6 +107,11 @@ public class DB {
 
 	}
 	
+	/**
+	 * Returns the user according to the given email
+	 * @param email the email of the user
+	 * @return the user if found, else null
+	 */
 	public User getUser(String email) {
 		Query query = em.createQuery("select u from User u where u.email = :email");
 		query.setParameter("email", email);
@@ -84,9 +123,13 @@ public class DB {
 			return null;
 		}
 		return user;
-
 	}
 	
+	/**
+	 * Returns list of events according to the given user id
+	 * @param id the id of the user
+	 * @return the list of events related to the user with the given id
+	 */
 	public List<Event> getEventById(int id) {
 		Query query = em.createQuery("select e from Event e where e.user.id = :id");
 		query.setParameter("id", id);
@@ -98,6 +141,47 @@ public class DB {
 			return null;
 		}
 		return events;
+	}
+	
+	/**
+	 * This method update the given event
+	 * @param event the event to be updated
+	 * @return 
+	 */
+	public boolean updateEvent(Event event) {
+		Event e = em.find(Event.class, event.getId());
+
+		em.getTransaction().begin();
+		e.setTitle(event.getTitle());
+		e.setDescription(event.getDescription());
+		e.setDateStart(event.getDateStart());
+		e.setDateEnd(event.getDateEnd());
+		em.getTransaction().commit();
+		return true;
+	}
+
+	/**
+	 * This method remove the given event from the database
+	 * @param event the event to be removed
+	 * @return
+	 */
+	public boolean removeEvent(Event event) {
+		Event e = em.find(Event.class, event.getId());
+
+		em.getTransaction().begin();
+		em.remove(e);
+		em.getTransaction().commit();
+		return true;
+	}
+
+	/**
+	 * This method returns all events 
+	 * @return list of events
+	 */
+	public List<Event> getEvents() {
+		Query query = em.createQuery("select e from Event e");
+		Vector<Event> categories = (Vector<Event>)query.getResultList();
+		return categories;	
 	}
 
 	public static void main(String[] args) {
@@ -150,33 +234,6 @@ public class DB {
 //		db.addEvent(event);
 //		db.updateEvent(event);
 
-	}
-
-	public boolean updateEvent(Event event) {
-		Event e = em.find(Event.class, event.getId());
-
-		em.getTransaction().begin();
-		e.setTitle(event.getTitle());
-		e.setDescription(event.getDescription());
-		e.setDateStart(event.getDateStart());
-		e.setDateEnd(event.getDateEnd());
-		em.getTransaction().commit();
-		return true;
-	}
-
-	public boolean removeEvent(Event event) {
-		Event e = em.find(Event.class, event.getId());
-
-		em.getTransaction().begin();
-		em.remove(e);
-		em.getTransaction().commit();
-		return true;
-	}
-
-	public List<Event> getEvents() {
-		Query query = em.createQuery("select e from Event e");
-		Vector<Event> categories = (Vector<Event>)query.getResultList();
-		return categories;	
 	}
 
 }

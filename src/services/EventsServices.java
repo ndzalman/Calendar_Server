@@ -27,11 +27,14 @@ import db.DB;
 public class EventsServices {
 	private DB db = DB.getInstance();
 	
+	/**
+	 * This service returns list of events
+	 * @return the list of events
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/getAllEvents")
 	public String getAllEvents() {
-		Gson json = new Gson();
 		List<Event> events = new ArrayList<>();
 		events = db.getEvents();
 		
@@ -50,13 +53,17 @@ public class EventsServices {
 				})
 				.serializeNulls()
 				.create();
-		
-		
+	
 		return gson.toJson(events.toArray());	
 	}
 	
 	
-	// web method
+		// web method
+	/**
+	 * This service returns events according to the user id
+	 * @param id the id of the user
+	 * @return list of events related to this user
+	 */
 		@POST
 		@Path("/getEventById")
 		@Produces(MediaType.APPLICATION_JSON)
@@ -88,6 +95,11 @@ public class EventsServices {
 	
 
 	
+	/**
+	 * 
+	 * @param input
+	 * @return
+	 */
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
@@ -114,6 +126,11 @@ public class EventsServices {
 		
 	}
 	
+	/**
+	 * This service updates the given event
+	 * @param input
+	 * @return
+	 */
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
@@ -142,6 +159,11 @@ public class EventsServices {
 		}
 	}
 	
+	/**
+	 * This service removes the given event
+	 * @param input
+	 * @return
+	 */
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
