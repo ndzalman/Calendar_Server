@@ -143,6 +143,7 @@ public class Event {
     public void setDateStart(Calendar dateStart) {
         this.dateStart = dateStart;
     }
+    
     /**
      * Returns the ending date of this event
      * @return the ending date of this event
@@ -158,6 +159,7 @@ public class Event {
     public void setDateEnd(Calendar dateEnd) {
         this.dateEnd = dateEnd;
     }
+    
     /**
      * Returns the description of this event
      * @return the description of this event
@@ -173,6 +175,7 @@ public class Event {
     public void setDescription(String description) {
         this.description = description;
     }
+    
     /**
      * Returns the user of this event
      * @return the user of this event
