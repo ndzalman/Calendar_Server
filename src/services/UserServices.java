@@ -128,4 +128,31 @@ public class UserServices {
 		return jsonString;
 	}
 	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/getAllUsers")
+	public String getAllUsers() {
+		List<User> users = new ArrayList<>();
+		users = db.getUsers();
+		
+		Gson gson = new GsonBuilder()
+				.setExclusionStrategies(new ExclusionStrategy() {
+					
+					@Override
+					public boolean shouldSkipField(FieldAttributes f) {
+			            return false;			            
+					}
+					
+					@Override
+					public boolean shouldSkipClass(Class<?> clazz) {
+			            return (clazz == Event.class);
+					}
+				})
+				.serializeNulls()
+				.create();
+	
+		return gson.toJson(users.toArray());	
+	}
+	
+	
 }

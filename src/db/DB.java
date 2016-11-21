@@ -183,6 +183,12 @@ public class DB {
 		Vector<Event> categories = (Vector<Event>)query.getResultList();
 		return categories;	
 	}
+	
+	public List<User> getUsers() {
+		Query query = em.createQuery("select u from User u");
+		Vector<User> users = (Vector<User>)query.getResultList();
+		return users;	
+	}
 
 	public static void main(String[] args) {
 		DB db = DB.getInstance();

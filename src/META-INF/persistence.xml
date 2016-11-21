@@ -4,6 +4,7 @@
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 		<class>data.Event</class>
 		<class>data.User</class>
+		<class>data.Meeting</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/calendar_db;create=true"/>
