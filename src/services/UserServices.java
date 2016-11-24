@@ -128,12 +128,21 @@ public class UserServices {
 		return jsonString;
 	}
 	
+	/**
+	 * Returns the list of users
+	 * @return list of users
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/getAllUsers")
-	public String getAllUsers() {
+	public String getAllUsers(@QueryParam("id") int id) {
 		List<User> users = new ArrayList<>();
 		users = db.getUsers();
+		for (int i=0; i<users.size(); i++){
+			if (users.get(i).getId() == id){
+				users.remove(users.get(i));
+			}
+		}
 		
 		Gson gson = new GsonBuilder()
 				.setExclusionStrategies(new ExclusionStrategy() {
@@ -152,6 +161,30 @@ public class UserServices {
 				.create();
 	
 		return gson.toJson(users.toArray());	
+	}
+	
+	/**
+	 * Inserts the token to the user with the given id
+	 * @param userId
+	 * @param pushId
+	 */
+	@GET
+	@Path("/insertTokenToUser")
+	public void insertTokenToUser(@QueryParam("id") int id ,@QueryParam("token")String token) {
+		System.out.println("inside attach token user id is: " + id);
+		db.insertTokenToUser(id, token);
+	}
+
+	/**
+	 * Returns the token to the user with given id
+	 * @param user
+	 * @return the token
+	 */
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	@Path("/getToken")
+	public String getToken(@QueryParam("id") int id ) {
+		return db.getUserToken(id);
 	}
 	
 	

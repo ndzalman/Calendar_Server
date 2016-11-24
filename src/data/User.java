@@ -3,7 +3,9 @@ package data;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +14,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -30,7 +35,7 @@ public class User{
 	 * Id of the user
 	 */
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column( name = "USER_ID", nullable=false)
+	@Column( name = "ID", nullable=false)
     private int id;
 	
 	/**
@@ -57,12 +62,20 @@ public class User{
 	@Temporal(TemporalType.DATE) // for saving without time
     private Calendar dateOfBirth;
     
-	/**
-	 * Events of the user, one user can have many events
-	 */
-	@OneToMany(cascade=CascadeType.ALL,mappedBy="user")
-    private List<Event> events = new ArrayList<>();
+//	/**
+//	 * Events of the user, one user can have many events
+//	 */
+//	@ManyToMany(targetEntity = Event.class,cascade=CascadeType.ALL)
+//    private Set<Event> events = new HashSet<>();
 
+
+    /**
+     * token of the user
+     */
+	@Column( name = "Token")
+    private String token;
+
+	
 	/**
 	 * Default constructor
 	 */
@@ -149,37 +162,37 @@ public class User{
         this.dateOfBirth = dateOfBirth;
     }
 
-    /**
-     * Returns the events of the user
-     * @return the events of the user
-     */
-    public List<Event> getEvents() {
-        return events;
-    }
-
-    /**
-     * Sets the events of the user
-     * @param events the events of the user
-     */
-    public void setEvents(List<Event> events) {
-        this.events = events;
-    }
-
-    /**
-     * Add event to the list events of the user
-     * @param event the event to be added
-     */
-    public void addEvent(Event event){
-        this.events.add(event);
-    }
-
-    /**
-     * Remove event from the list events of the user
-     * @param event the event to be removed
-     */
-    public void removeEvent(Event event){
-        this.events.remove(event);
-    }
+//    /**
+//     * Returns the events of the user
+//     * @return the events of the user
+//     */
+//    public Set<Event> getEvents() {
+//        return events;
+//    }
+//
+//    /**
+//     * Sets the events of the user
+//     * @param events the events of the user
+//     */
+//    public void setEvents(Set<Event> events) {
+//        this.events = events;
+//    }
+//
+//    /**
+//     * Add event to the list events of the user
+//     * @param event the event to be added
+//     */
+//    public void addEvent(Event event){
+//        this.events.add(event);
+//    }
+//
+//    /**
+//     * Remove event from the list events of the user
+//     * @param event the event to be removed
+//     */
+//    public void removeEvent(Event event){
+//        this.events.remove(event);
+//    }
 
     /**
      * Returns the id of the user
@@ -187,6 +200,46 @@ public class User{
      */
     public int getId() {
 		return id;
+	}
+    
+    /**
+     * Returns the token of the user
+     * @return the token of the user
+     */
+    public String getToken() {
+        return token;
+    }
+
+    /**
+     * Sets the token of the user
+     * @param token the token of the user
+     */
+    public void setToken(String token) {
+        this.token = token;
+    }
+    
+    
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 
 	@Override
@@ -197,7 +250,7 @@ public class User{
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
-                ", events=" + events +
+//                ", events=" + events +
                 '}';
     }
 }

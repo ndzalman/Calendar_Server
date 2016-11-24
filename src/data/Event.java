@@ -1,6 +1,10 @@
 package data;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,13 +12,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 
 
 /**
@@ -30,7 +33,7 @@ public class Event {
 	 * Id of this event. auto generate.
 	 */
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column( name = "Id", nullable=false)
+	@Column( name = "ID", nullable=false)
 	private int id;
 	
 	/**
@@ -61,9 +64,8 @@ public class Event {
 	/**
 	 * User of this event. many events can be related to one user.
 	 */
-    @ManyToOne
-    @JoinColumn(name="USER_ID", nullable=false)
-    private User user;
+	@ManyToMany(targetEntity=User.class,cascade=CascadeType.ALL)
+    private Set<User> users = new HashSet<>();
 	
     /**
      * Default constructor.initialize an empty event object.
@@ -177,19 +179,36 @@ public class Event {
     }
     
     /**
-     * Returns the user of this event
-     * @return the user of this event
+     * Returns the users of this event
+     * @return the users of this event
      */
-	public User getUser() {
-		return user;
+	public Set<User> getUsers() {
+		return this.users;
 	}
 
+
+	/**
+	 * Add user to list of users
+	 * @param user the user to be added
+	 */
+	public void addUser(User user) {
+		this.users.add(user);
+	}
+	
+	/**
+	 * Remove user from list of users
+	 * @param user the user to be removed
+	 */
+	public void removeUser(User user) {
+		this.users.remove(user);
+	}
+	
     /**
-     * Sets the user of this event
-     * @param user the user of this event
+     * Sets the users of this event
+     * @param users the users of this event
      */
-	public void setUser(User user) {
-		this.user = user;
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 
 	@Override
@@ -216,7 +235,6 @@ public class Event {
                 ", dateStart=" + dateStart +
                 ", dateEnd=" + dateEnd +
                 ", description='" + description + '\'' +
-                ", user id=" + user.getId() +
                 '}';
     }
 	

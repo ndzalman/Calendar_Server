@@ -79,7 +79,7 @@ public class DB {
 	 */
 	public int addEvent(Event event) {
 		em.getTransaction().begin();
-		em.persist(event);
+		em.merge(event);
 		em.flush();
 		int id = event.getId();
 		em.getTransaction().commit();
@@ -183,11 +183,37 @@ public class DB {
 		Vector<Event> categories = (Vector<Event>)query.getResultList();
 		return categories;	
 	}
-	
+
+	/**
+	 * This method returns all users 
+	 * @return list of users
+	 */
 	public List<User> getUsers() {
 		Query query = em.createQuery("select u from User u");
 		Vector<User> users = (Vector<User>)query.getResultList();
 		return users;	
+	}
+	
+	/**
+	 * Inserts the given token to the user with given id
+	 * @param user
+	 * @param pushToken
+	 */
+	public void insertTokenToUser( int id, String token ) {
+		User user = em.find(User.class, id);
+		  em.getTransaction().begin();
+		  user.setToken(token);
+		  em.getTransaction().commit();	
+	}
+	
+	/**
+	 * Returns the token of the user with the given id
+	 * @param id the user id
+	 */
+	public String getUserToken( int id ) {
+		User user = em.find(User.class, id);
+		String token = user.getToken();
+		return token;
 	}
 
 	public static void main(String[] args) {
