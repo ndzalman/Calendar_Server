@@ -49,6 +49,13 @@ public class User{
 	 */
 	@Column( name = "Email", nullable=false, length=40,unique=true)
     private String email;
+    
+
+    /**
+     * Phone number of the user,
+     */
+	@Column( name = "Phone_Number", nullable=false)
+    private String phoneNumber;
 	
 	/**
 	 * Password of the user
@@ -217,8 +224,22 @@ public class User{
     public void setToken(String token) {
         this.token = token;
     }
-    
-    
+
+    /**
+     * Returns the phone number of the user
+     * @return the phone number of the user
+     */
+    public String getPhoneNUmber() {
+        return phoneNumber;
+    }
+
+    /**
+     * Sets the phone number of the user
+     * @param phoneNumber the token of the user
+     */
+    public void setPhoneNUmber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
 	@Override
 	public int hashCode() {
