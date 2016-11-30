@@ -64,7 +64,7 @@ public class Event {
 	/**
 	 * User of this event. many events can be related to one user.
 	 */
-	@ManyToMany(targetEntity=User.class,cascade=CascadeType.ALL)
+	@ManyToMany(targetEntity=User.class,cascade=CascadeType.PERSIST)
     private Set<User> users = new HashSet<>();
 	
     /**
