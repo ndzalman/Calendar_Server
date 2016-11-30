@@ -123,8 +123,14 @@ public class EventsServices {
 		
 		Gson gson = new Gson();
 		Event event = gson.fromJson(eventJSON.toString(), Event.class);
+		System.out.println("users in this event: " + event.getUsers().size());
+
+		String id = "-1";
+		
+		id = String.valueOf(db.addEvent(event));
 		
 		Set<User> eventUsers = event.getUsers();
+		System.out.println("users in this event: " + eventUsers.size());
 		for(User u : eventUsers)
 		{
 			try {
@@ -134,8 +140,7 @@ public class EventsServices {
 				e.printStackTrace();
 			}
 		}
-		String id = "-1";
-		id = String.valueOf(db.addEvent(event));
+		
 		return id;
 
 		
@@ -151,17 +156,22 @@ public class EventsServices {
 			//add reuqest header
 			con.setRequestMethod("POST");
 			//con.setRequestProperty("User-Agent", USER_AGENT);
-			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-			con.setRequestProperty("Content-Type", "application/json");
+//			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+			con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 			con.setRequestProperty("Authorization", "key=AIzaSyC6pdNl8PS2jgcV-sxDwlospmXMQa44e7A");
 
-			String urlParameters = "{\"to\":\"" + db.getUserToken(2) + 
+			String urlParameters = "{\"to\":\"" + db.getUserToken(u.getId()) + 
 					"\", \"data\": {\"event-title\":\"" + e.getTitle() + "\"}}";
-
+			
+			 byte[] sendBytes = urlParameters.getBytes("UTF-8");
+			   con.setFixedLengthStreamingMode(sendBytes.length);
+			
+			
 			// Send post request
 			con.setDoOutput(true);
 			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-			wr.writeBytes(urlParameters);
+//			wr.writeBytes(urlParameters);
+			wr.write(sendBytes);
 			wr.flush();
 			wr.close();
 
@@ -184,8 +194,6 @@ public class EventsServices {
 			System.out.println(response.toString());
 
 		}
-
-	
 	
 	/**
 	 * This service updates the given event
