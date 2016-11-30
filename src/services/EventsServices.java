@@ -1,11 +1,15 @@
 package services;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -119,12 +123,69 @@ public class EventsServices {
 		
 		Gson gson = new Gson();
 		Event event = gson.fromJson(eventJSON.toString(), Event.class);
+		
+		Set<User> eventUsers = event.getUsers();
+		for(User u : eventUsers)
+		{
+			try {
+				sendMessageToDevice(event, u);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		String id = "-1";
 		id = String.valueOf(db.addEvent(event));
 		return id;
 
 		
 	}
+	
+	public void sendMessageToDevice(Event e, User u) throws Exception
+	{
+		
+			String url = "https://gcm-http.googleapis.com/gcm/send";
+			URL obj = new URL(url);
+			HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+
+			//add reuqest header
+			con.setRequestMethod("POST");
+			//con.setRequestProperty("User-Agent", USER_AGENT);
+			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+			con.setRequestProperty("Content-Type", "application/json");
+			con.setRequestProperty("Authorization", "key=AIzaSyC6pdNl8PS2jgcV-sxDwlospmXMQa44e7A");
+
+			String urlParameters = "{\"to\":\"" + db.getUserToken(2) + 
+					"\", \"data\": {\"event-title\":\"" + e.getTitle() + "\"}}";
+
+			// Send post request
+			con.setDoOutput(true);
+			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+			wr.writeBytes(urlParameters);
+			wr.flush();
+			wr.close();
+
+			int responseCode = con.getResponseCode();
+			System.out.println("\nSending 'POST' request to URL : " + url);
+			System.out.println("Post parameters : " + urlParameters);
+			System.out.println("Response Code : " + responseCode);
+
+			BufferedReader in = new BufferedReader(
+			        new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+
+			//print result
+			System.out.println(response.toString());
+
+		}
+
+	
 	
 	/**
 	 * This service updates the given event

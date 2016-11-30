@@ -41,26 +41,26 @@ public class User{
 	/**
 	 * User name of the user
 	 */
-	@Column( name = "user_name", nullable=false, length=15)
+	@Column( name = "user_name", nullable=false)
     private String userName;
 	
 	/**
 	 * Email of the user, this field is unique
 	 */
-	@Column( name = "Email", nullable=false, length=40,unique=true)
+	@Column( name = "Email", nullable=false,unique=true)
     private String email;
     
 
     /**
      * Phone number of the user,
      */
-	@Column( name = "Phone_Number", nullable=false)
+	@Column( name = "Phone_Number")
     private String phoneNumber;
 	
 	/**
 	 * Password of the user
 	 */
-	@Column( name = "Password", nullable=false, length=20)
+	@Column( name = "Password", nullable=false)
     private String password;
 	
 	/**
