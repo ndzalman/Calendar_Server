@@ -64,8 +64,14 @@ public class Event {
 	/**
 	 * User of this event. many events can be related to one user.
 	 */
-	@ManyToMany(targetEntity=User.class,cascade=CascadeType.PERSIST)
+	@ManyToMany(targetEntity=User.class)
     private Set<User> users = new HashSet<>();
+	
+	/**
+	 * User id of the owner of this event
+	 */
+	@Column(name="Owner_Id", nullable=false)
+	private int ownerId;
 	
     /**
      * Default constructor.initialize an empty event object.
@@ -210,6 +216,15 @@ public class Event {
 	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
+	
+
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
+    }
 
 	@Override
     public boolean equals(Object o) {

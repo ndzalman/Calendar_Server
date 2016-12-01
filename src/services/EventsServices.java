@@ -127,17 +127,22 @@ public class EventsServices {
 
 		String id = "-1";
 		
-		id = String.valueOf(db.addEvent(event));
+		int eventId = db.addEvent(event);
+		id = String.valueOf(eventId);
+		event.setId(eventId);
+		System.out.println("event id: " + eventId);
 		
 		Set<User> eventUsers = event.getUsers();
 		System.out.println("users in this event: " + eventUsers.size());
 		for(User u : eventUsers)
 		{
-			try {
+			if (u.getId() != event.getOwnerId()){ //send notification to everyone but the owner
+				try {
 				sendMessageToDevice(event, u);
-			} catch (Exception e) {
+				} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				}
 			}
 		}
 		
@@ -160,8 +165,14 @@ public class EventsServices {
 			con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 			con.setRequestProperty("Authorization", "key=AIzaSyC6pdNl8PS2jgcV-sxDwlospmXMQa44e7A");
 
+			String eventJSON = new Gson().toJson(e);
+//			
+//			String urlParameters = "{\"to\":\"" + db.getUserToken(u.getId()) + 
+//					"\", \"data\": {\"event-title\":\"" + e.getTitle() + "\"}}";
+			
 			String urlParameters = "{\"to\":\"" + db.getUserToken(u.getId()) + 
-					"\", \"data\": {\"event-title\":\"" + e.getTitle() + "\"}}";
+					"\", \"data\":"+ eventJSON +"}";
+
 			
 			 byte[] sendBytes = urlParameters.getBytes("UTF-8");
 			   con.setFixedLengthStreamingMode(sendBytes.length);

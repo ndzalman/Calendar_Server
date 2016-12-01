@@ -79,10 +79,13 @@ public class DB {
 	 */
 	public int addEvent(Event event) {
 		em.getTransaction().begin();
-		em.merge(event);
+		em.persist(event);
 		em.flush();
 		int id = event.getId();
+		System.out.println("event id: " + id);
 		em.getTransaction().commit();
+		System.out.println("event id: " + id);
+		System.out.println("event: " + event.toString());
 		return id;
 	}
 
