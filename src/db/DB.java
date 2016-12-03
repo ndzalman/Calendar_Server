@@ -1,5 +1,6 @@
 package db;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -183,8 +184,19 @@ public class DB {
 	 */
 	public List<Event> getEvents() {
 		Query query = em.createQuery("select e from Event e");
-		Vector<Event> categories = (Vector<Event>)query.getResultList();
-		return categories;	
+		Vector<Event> events = (Vector<Event>)query.getResultList();
+		return events;	
+	}
+	
+
+	public List<Event> getSharedEvents(int id) {
+		Query query = em.createQuery("select e from Event e inner join e.users user where user.id in :id");
+		List<Integer> ids = new LinkedList<>();
+        ids.add(id);
+		query.setParameter("id", ids);
+		Vector<Event> events = (Vector<Event>)query.getResultList();
+		return events;	
+		
 	}
 
 	/**
@@ -270,5 +282,6 @@ public class DB {
 //		db.updateEvent(event);
 
 	}
+
 
 }

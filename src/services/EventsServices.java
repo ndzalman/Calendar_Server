@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -16,12 +17,14 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import data.Event;
 import data.User;
@@ -42,25 +45,49 @@ public class EventsServices {
 		List<Event> events = new ArrayList<>();
 		events = db.getEvents();
 		
-		Gson gson = new GsonBuilder()
-				.setExclusionStrategies(new ExclusionStrategy() {
-					
-					@Override
-					public boolean shouldSkipField(FieldAttributes f) {
-			            return false;			            
-					}
-					
-					@Override
-					public boolean shouldSkipClass(Class<?> clazz) {
-			            return (clazz == User.class);
-					}
-				})
-				.serializeNulls()
-				.create();
+	    String eventsJSON = new Gson()
+	    		.toJson(events, new TypeToken<Collection<Event>>() {}.getType());
+		
+//		Gson gson = new GsonBuilder()
+//				.setExclusionStrategies(new ExclusionStrategy() {
+//					
+//					@Override
+//					public boolean shouldSkipField(FieldAttributes f) {
+//			            return false;			            
+//					}
+//					
+//					@Override
+//					public boolean shouldSkipClass(Class<?> clazz) {
+//			            return (clazz == User.class);
+//					}
+//				})
+//				.serializeNulls()
+//				.create();
 	
-		return gson.toJson(events.toArray());	
+//		return gson.toJson(events.toArray());	
+	    
+	    return eventsJSON;
 	}
 	
+	
+	
+	/**
+	 * This service returns list of events
+	 * @return the list of events
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/getAllSharedEvents")
+	public String getAllSharedEvents(@QueryParam("id") int id) {
+		List<Event> events = new ArrayList<>();
+		events = db.getSharedEvents(id);
+		System.out.println("events: " + events.size());
+		
+	    String eventsJSON = new Gson()
+	    		.toJson(events, new TypeToken<Collection<Event>>() {}.getType());
+	    
+	    return eventsJSON;
+	}
 	
 		// web method
 	/**
@@ -136,6 +163,7 @@ public class EventsServices {
 		System.out.println("users in this event: " + eventUsers.size());
 		for(User u : eventUsers)
 		{
+			System.out.println(u.getId() + " != " + event.getOwnerId());
 			if (u.getId() != event.getOwnerId()){ //send notification to everyone but the owner
 				try {
 				sendMessageToDevice(event, u);
