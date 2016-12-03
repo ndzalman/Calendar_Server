@@ -55,7 +55,13 @@ public class Event {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column( name = "Date_End")
     private Calendar dateEnd;
-    
+	
+	/**
+	 * Location of the event
+	 */
+	@Column( name = "Location")
+    private String location;
+	
 	/**
 	 * Description of this event.
 	 */
