@@ -211,6 +211,11 @@ public class DB {
         ids.add(id);
 		query.setParameter("id", ids);
 		Vector<Event> events = (Vector<Event>)query.getResultList();
+		for (Event e: events){
+			for (User u: e.getUsers()){
+				u.setImage(null);
+			}
+		}
 		return events;	
 		
 	}
