@@ -89,6 +89,25 @@ public class EventsServices {
 	    return eventsJSON;
 	}
 	
+	/**
+	 * This service returns list of events
+	 * @return the list of events
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/getUpcomingEvents")
+	public String getUpcomingEvents(@QueryParam("id") int id) {
+		List<Event> events = new ArrayList<>();
+		events = db.getUpcomingEvents(id);
+		System.out.println("events: " + events.size());
+		
+	    String eventsJSON = new Gson()
+	    		.toJson(events, new TypeToken<Collection<Event>>() {}.getType());
+	    
+	    return eventsJSON;
+	}
+	
+	
 		// web method
 	/**
 	 * This service returns events according to the user id

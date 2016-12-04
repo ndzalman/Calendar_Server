@@ -1,5 +1,6 @@
 package db;
 
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
@@ -199,6 +200,22 @@ public class DB {
 		
 	}
 
+	public List<Event> getUpcomingEvents(int id) {
+		Query query = em.createQuery("select e from Event e inner join e.users user where user.id in :id AND e.dateStart > :date");
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		List<Integer> ids = new LinkedList<>();
+        ids.add(id);
+		query.setParameter("id", ids);
+		query.setParameter("date", calendar);
+		query.setMaxResults(10); //limit result to 10
+		Vector<Event> events = (Vector<Event>)query.getResultList();
+		return events;	
+	}
+	
 	/**
 	 * This method returns all users 
 	 * @return list of users
@@ -282,6 +299,7 @@ public class DB {
 //		db.updateEvent(event);
 
 	}
+
 
 
 }

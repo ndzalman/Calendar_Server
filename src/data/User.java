@@ -81,7 +81,6 @@ public class User{
      */
 	@Column( name = "Token")
     private String token;
-
 	
 	/**
 	 * Default constructor
