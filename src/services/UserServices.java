@@ -139,6 +139,7 @@ public class UserServices {
 		List<User> users = new ArrayList<>();
 		users = db.getUsers();
 		for (int i=0; i<users.size(); i++){
+			users.get(i).setImage(null);
 			if (users.get(i).getId() == id){
 				users.remove(users.get(i));
 			}
@@ -185,6 +186,37 @@ public class UserServices {
 	@Path("/getToken")
 	public String getToken(@QueryParam("id") int id ) {
 		return db.getUserToken(id);
+	}
+	
+	/**
+	 * This service updates a new user to the db
+	 * @param input an input stream between the server and the client
+	 * @return 'ok' if user updated successfully otherwise 'notOk'
+	 */
+	@POST
+	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.TEXT_PLAIN)
+	@Path("/updateUser")
+	public String updateUser( InputStream input ) {
+		StringBuilder jsonUser = new StringBuilder();
+		try {
+			BufferedReader in = new BufferedReader(new InputStreamReader(input));
+			String line = null;
+			while ((line = in.readLine()) != null) {
+				jsonUser.append(line);
+			}
+		} catch (Exception e) {
+			System.out.println("Error Parsing: - ");
+		}
+		Gson gson = new Gson();
+		User user = gson.fromJson(jsonUser.toString(), User.class);
+		boolean result = db.updateUser(user);
+		System.out.println("update user result: " + result);
+		if(result) {
+			return "OK";
+		} else {
+			return "notOk";
+		}
 	}
 	
 	

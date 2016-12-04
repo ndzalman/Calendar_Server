@@ -64,6 +64,12 @@ public class User{
     private String password;
 	
 	/**
+	 * Image of the user
+	 */
+	@Column( name = "Image")
+    private byte[] image;
+	
+	/**
 	 * Date of birth of the user
 	 */
 	@Temporal(TemporalType.DATE) // for saving without time
@@ -228,17 +234,41 @@ public class User{
      * Returns the phone number of the user
      * @return the phone number of the user
      */
-    public String getPhoneNUmber() {
-        return phoneNumber;
-    }
-
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+	
     /**
      * Sets the phone number of the user
      * @param phoneNumber the token of the user
      */
-    public void setPhoneNUmber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+	
+    /**
+     * Returns the image of the user
+     * @return the image of the user
+     */
+	public byte[] getImage() {
+		return image;
+	}
+	
+    /**
+     * Sets the image of the user
+     * @param image the token of the user
+     */
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+	
+    /**
+     * Sets the id of the user
+     * @param id the token of the user
+     */
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	@Override
 	public int hashCode() {

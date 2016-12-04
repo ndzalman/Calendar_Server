@@ -161,6 +161,21 @@ public class DB {
 		e.setDescription(event.getDescription());
 		e.setDateStart(event.getDateStart());
 		e.setDateEnd(event.getDateEnd());
+		e.setLocation(event.getLocation());
+		em.getTransaction().commit();
+		return true;
+	}
+	
+
+	public boolean updateUser(User user) {
+		User u = em.find(User.class, user.getId());
+
+		em.getTransaction().begin();
+		u.setUserName(user.getUserName());
+		u.setPhoneNumber(user.getPhoneNumber());
+		u.setEmail(user.getEmail());
+		u.setPassword(user.getPassword());
+		u.setImage(user.getImage());
 		em.getTransaction().commit();
 		return true;
 	}
@@ -299,6 +314,7 @@ public class DB {
 //		db.updateEvent(event);
 
 	}
+
 
 
 

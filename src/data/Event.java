@@ -232,6 +232,14 @@ public class Event {
     public void setOwnerId(int ownerId) {
         this.ownerId = ownerId;
     }
+    
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
 
 	@Override
     public boolean equals(Object o) {
