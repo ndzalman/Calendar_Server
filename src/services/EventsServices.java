@@ -107,6 +107,24 @@ public class EventsServices {
 	    return eventsJSON;
 	}
 	
+	/**
+	 * This service returns list of events
+	 * @return the list of events
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/getEventsByDay")
+	public String getEventsByDay(@QueryParam("id") int id) {
+		List<Event> events = new ArrayList<>();
+		events = db.getEventsByDay(id);
+		System.out.println("events today: " + events.size());
+		
+	    String eventsJSON = new Gson()
+	    		.toJson(events, new TypeToken<Collection<Event>>() {}.getType());
+	    
+	    return eventsJSON;
+	}
+	
 	
 		// web method
 	/**
@@ -212,11 +230,13 @@ public class EventsServices {
 			con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 			con.setRequestProperty("Authorization", "key=AIzaSyC6pdNl8PS2jgcV-sxDwlospmXMQa44e7A");
 
+//			e.getUsers().clear();
+//			e.setUsers(null);
 			String eventJSON = new Gson().toJson(e);
-//			
+			
 //			String urlParameters = "{\"to\":\"" + db.getUserToken(u.getId()) + 
 //					"\", \"data\": {\"event-title\":\"" + e.getTitle() + "\"}}";
-			
+////			
 			String urlParameters = "{\"to\":\"" + db.getUserToken(u.getId()) + 
 					"\", \"data\":"+ eventJSON +"}";
 
@@ -228,7 +248,7 @@ public class EventsServices {
 			// Send post request
 			con.setDoOutput(true);
 			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-//			wr.writeBytes(urlParameters);
+//			wr.writeBytes(urlParameters); //orginal
 			wr.write(sendBytes);
 			wr.flush();
 			wr.close();

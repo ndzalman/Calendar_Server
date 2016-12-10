@@ -162,6 +162,7 @@ public class DB {
 		e.setDateStart(event.getDateStart());
 		e.setDateEnd(event.getDateEnd());
 		e.setLocation(event.getLocation());
+		e.setUsers(event.getUsers());
 		em.getTransaction().commit();
 		return true;
 	}
@@ -232,6 +233,22 @@ public class DB {
 		query.setParameter("id", ids);
 		query.setParameter("date", calendar);
 		query.setMaxResults(10); //limit result to 10
+		Vector<Event> events = (Vector<Event>)query.getResultList();
+		return events;	
+	}
+	
+
+	public List<Event> getEventsByDay(int id) {
+		Query query = em.createQuery("select e from Event e inner join e.users user where user.id in :id AND e.dateStart >= :date");
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		List<Integer> ids = new LinkedList<>();
+        ids.add(id);
+		query.setParameter("id", ids);
+		query.setParameter("date", calendar);
 		Vector<Event> events = (Vector<Event>)query.getResultList();
 		return events;	
 	}
@@ -319,6 +336,7 @@ public class DB {
 //		db.updateEvent(event);
 
 	}
+
 
 
 
