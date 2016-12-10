@@ -219,5 +219,20 @@ public class UserServices {
 		}
 	}
 	
+	/**
+	 * This service removes user from an event
+	 * @return the list of events
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/removeUserFromEvent")
+	public String removeUserFromEvent(@QueryParam("userId") int userId,@QueryParam("eventId") int eventId) {
+		System.out.println("in remove user from event");
+		String result = db.removeUserFromEvent(userId, eventId);
+			    
+	    return result;
+	}
+
+	
 	
 }

@@ -196,14 +196,15 @@ public class EventsServices {
 		event.setId(eventId);
 		System.out.println("event id: " + eventId);
 		
-		Set<User> eventUsers = event.getUsers();
-		System.out.println("users in this event: " + eventUsers.size());
-		for(User u : eventUsers)
+		List<User> users = new ArrayList<>();
+		users.addAll(event.getUsers());
+		System.out.println("users in this event: " + users.size());
+		for(int i=0; i< users.size();i++)
 		{
-			System.out.println(u.getId() + " != " + event.getOwnerId());
-			if (u.getId() != event.getOwnerId()){ //send notification to everyone but the owner
+			System.out.println(users.get(i).getId() + " != " + event.getOwnerId());
+			if (users.get(i).getId() != event.getOwnerId()){ //send notification to everyone but the owner
 				try {
-				sendMessageToDevice(event, u);
+				sendMessageToDevice(event, users.get(i));
 				} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -218,7 +219,7 @@ public class EventsServices {
 	
 	public void sendMessageToDevice(Event e, User u) throws Exception
 	{
-		
+		e.getUsers().clear();
 			String url = "https://gcm-http.googleapis.com/gcm/send";
 			URL obj = new URL(url);
 			HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
@@ -230,8 +231,6 @@ public class EventsServices {
 			con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 			con.setRequestProperty("Authorization", "key=AIzaSyC6pdNl8PS2jgcV-sxDwlospmXMQa44e7A");
 
-//			e.getUsers().clear();
-//			e.setUsers(null);
 			String eventJSON = new Gson().toJson(e);
 			
 //			String urlParameters = "{\"to\":\"" + db.getUserToken(u.getId()) + 
@@ -338,6 +337,4 @@ public class EventsServices {
 		}
 	}
 	
-	
-
 }

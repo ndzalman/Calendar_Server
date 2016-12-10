@@ -275,6 +275,17 @@ public class DB {
 		  em.getTransaction().commit();	
 	}
 	
+
+	public String removeUserFromEvent(int userId, int eventId) {
+		Event event = em.find(Event.class, eventId);
+		User user = em.find(User.class, userId);
+
+		  em.getTransaction().begin();
+		  event.getUsers().remove(user);
+		  em.getTransaction().commit();	
+		  return "ok";
+	}
+	
 	/**
 	 * Returns the token of the user with the given id
 	 * @param id the user id
@@ -336,6 +347,7 @@ public class DB {
 //		db.updateEvent(event);
 
 	}
+
 
 
 
