@@ -33,9 +33,10 @@ import db.DB;
 @Path("/events")
 public class EventsServices {
 	private DB db = DB.getInstance();
-	
+
 	/**
 	 * This service returns list of events
+	 * 
 	 * @return the list of events
 	 */
 	@GET
@@ -44,35 +45,34 @@ public class EventsServices {
 	public String getAllEvents() {
 		List<Event> events = new ArrayList<>();
 		events = db.getEvents();
-		
-	    String eventsJSON = new Gson()
-	    		.toJson(events, new TypeToken<Collection<Event>>() {}.getType());
-		
-//		Gson gson = new GsonBuilder()
-//				.setExclusionStrategies(new ExclusionStrategy() {
-//					
-//					@Override
-//					public boolean shouldSkipField(FieldAttributes f) {
-//			            return false;			            
-//					}
-//					
-//					@Override
-//					public boolean shouldSkipClass(Class<?> clazz) {
-//			            return (clazz == User.class);
-//					}
-//				})
-//				.serializeNulls()
-//				.create();
-	
-//		return gson.toJson(events.toArray());	
-	    
-	    return eventsJSON;
+
+		String eventsJSON = new Gson().toJson(events, new TypeToken<Collection<Event>>() {
+		}.getType());
+
+		// Gson gson = new GsonBuilder()
+		// .setExclusionStrategies(new ExclusionStrategy() {
+		//
+		// @Override
+		// public boolean shouldSkipField(FieldAttributes f) {
+		// return false;
+		// }
+		//
+		// @Override
+		// public boolean shouldSkipClass(Class<?> clazz) {
+		// return (clazz == User.class);
+		// }
+		// })
+		// .serializeNulls()
+		// .create();
+
+		// return gson.toJson(events.toArray());
+
+		return eventsJSON;
 	}
-	
-	
-	
+
 	/**
 	 * This service returns list of events
+	 * 
 	 * @return the list of events
 	 */
 	@GET
@@ -82,15 +82,16 @@ public class EventsServices {
 		List<Event> events = new ArrayList<>();
 		events = db.getSharedEvents(id);
 		System.out.println("events: " + events.size());
-		
-	    String eventsJSON = new Gson()
-	    		.toJson(events, new TypeToken<Collection<Event>>() {}.getType());
-	    
-	    return eventsJSON;
+
+		String eventsJSON = new Gson().toJson(events, new TypeToken<Collection<Event>>() {
+		}.getType());
+
+		return eventsJSON;
 	}
-	
+
 	/**
 	 * This service returns list of events
+	 * 
 	 * @return the list of events
 	 */
 	@GET
@@ -100,15 +101,16 @@ public class EventsServices {
 		List<Event> events = new ArrayList<>();
 		events = db.getUpcomingEvents(id);
 		System.out.println("events: " + events.size());
-		
-	    String eventsJSON = new Gson()
-	    		.toJson(events, new TypeToken<Collection<Event>>() {}.getType());
-	    
-	    return eventsJSON;
+
+		String eventsJSON = new Gson().toJson(events, new TypeToken<Collection<Event>>() {
+		}.getType());
+
+		return eventsJSON;
 	}
-	
+
 	/**
 	 * This service returns list of events
+	 * 
 	 * @return the list of events
 	 */
 	@GET
@@ -118,51 +120,65 @@ public class EventsServices {
 		List<Event> events = new ArrayList<>();
 		events = db.getEventsByDay(id);
 		System.out.println("events today: " + events.size());
-		
-	    String eventsJSON = new Gson()
-	    		.toJson(events, new TypeToken<Collection<Event>>() {}.getType());
-	    
-	    return eventsJSON;
+
+		String eventsJSON = new Gson().toJson(events, new TypeToken<Collection<Event>>() {
+		}.getType());
+
+		return eventsJSON;
+	}
+
+	/**
+	 * This service returns list of events
+	 * 
+	 * @return the list of events
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/getEventsByEventId")
+	public String getEventsByEventId(@QueryParam("id") int id) {
+		Event event;
+		event = db.getEventsByEventId(id);
+
+		String eventsJSON = new Gson().toJson(event, new TypeToken<Event>() {
+		}.getType());
+
+		return eventsJSON;
 	}
 	
-	
-		// web method
+	// web method
 	/**
 	 * This service returns events according to the user id
-	 * @param id the id of the user
+	 * 
+	 * @param id
+	 *            the id of the user
 	 * @return list of events related to this user
 	 */
-		@POST
-		@Path("/getEventById")
-		@Produces(MediaType.APPLICATION_JSON)
-		public String getEventById(@FormParam("id") int id) {
-			System.out.println("in get event by id method id: " + id);
-			List<Event> events = new ArrayList<>();
-			events = db.getEventById(id);		
-			System.out.println(events.get(0).toString());
-			Gson gson = new GsonBuilder()
-					.setExclusionStrategies(new ExclusionStrategy() {
-						
-						@Override
-						public boolean shouldSkipField(FieldAttributes f) {
-				            return false;			            
-						}
-						
-						@Override
-						public boolean shouldSkipClass(Class<?> clazz) {
-				            return (clazz == User.class);
-						}
-					})
-					.serializeNulls()
-					.create();
-			
-			String jsonString = gson.toJson(events);
-			System.out.println(jsonString);
-			return jsonString;
-		}
-	
+	@POST
+	@Path("/getEventById")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getEventById(@FormParam("id") int id) {
+		System.out.println("in get event by id method id: " + id);
+		List<Event> events = new ArrayList<>();
+		events = db.getEventById(id);
+		System.out.println(events.get(0).toString());
+		Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
 
-	
+			@Override
+			public boolean shouldSkipField(FieldAttributes f) {
+				return false;
+			}
+
+			@Override
+			public boolean shouldSkipClass(Class<?> clazz) {
+				return (clazz == User.class);
+			}
+		}).serializeNulls().create();
+
+		String jsonString = gson.toJson(events);
+		System.out.println(jsonString);
+		return jsonString;
+	}
+
 	/**
 	 * 
 	 * @param input
@@ -172,7 +188,7 @@ public class EventsServices {
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Path("/addEvent")
-	public String addEvent( InputStream input ) {
+	public String addEvent(InputStream input) {
 		System.out.println("in addEvent method");
 		StringBuilder eventJSON = new StringBuilder();
 		try {
@@ -184,96 +200,109 @@ public class EventsServices {
 		} catch (Exception e) {
 			System.out.println("Error Parsing: - ");
 		}
-		
+
 		Gson gson = new Gson();
 		Event event = gson.fromJson(eventJSON.toString(), Event.class);
 		System.out.println("users in this event: " + event.getUsers().size());
 
 		String id = "-1";
-		
+
 		int eventId = db.addEvent(event);
 		id = String.valueOf(eventId);
 		event.setId(eventId);
 		System.out.println("event id: " + eventId);
-		
+
 		List<User> users = new ArrayList<>();
 		users.addAll(event.getUsers());
 		System.out.println("users in this event: " + users.size());
-		for(int i=0; i< users.size();i++)
-		{
+		for (int i = 0; i < users.size(); i++) {
 			System.out.println(users.get(i).getId() + " != " + event.getOwnerId());
-			if (users.get(i).getId() != event.getOwnerId()){ //send notification to everyone but the owner
+			if (users.get(i).getId() != event.getOwnerId()) { // send
+																// notification
+																// to everyone
+																// but the owner
 				try {
-				sendMessageToDevice(event, users.get(i));
+					sendMessageToDevice(event, users.get(i));
 				} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
-		
+
 		return id;
 
-		
 	}
-	
-	public void sendMessageToDevice(Event e, User u) throws Exception
-	{
-		e.getUsers().clear();
-			String url = "https://gcm-http.googleapis.com/gcm/send";
-			URL obj = new URL(url);
-			HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 
-			//add reuqest header
-			con.setRequestMethod("POST");
-			//con.setRequestProperty("User-Agent", USER_AGENT);
-//			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-			con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-			con.setRequestProperty("Authorization", "key=AIzaSyC6pdNl8PS2jgcV-sxDwlospmXMQa44e7A");
-
-			String eventJSON = new Gson().toJson(e);
-			
-//			String urlParameters = "{\"to\":\"" + db.getUserToken(u.getId()) + 
-//					"\", \"data\": {\"event-title\":\"" + e.getTitle() + "\"}}";
-////			
-			String urlParameters = "{\"to\":\"" + db.getUserToken(u.getId()) + 
-					"\", \"data\":"+ eventJSON +"}";
-
-			
-			 byte[] sendBytes = urlParameters.getBytes("UTF-8");
-			   con.setFixedLengthStreamingMode(sendBytes.length);
-			
-			
-			// Send post request
-			con.setDoOutput(true);
-			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-//			wr.writeBytes(urlParameters); //orginal
-			wr.write(sendBytes);
-			wr.flush();
-			wr.close();
-
-			int responseCode = con.getResponseCode();
-			System.out.println("\nSending 'POST' request to URL : " + url);
-			System.out.println("Post parameters : " + urlParameters);
-			System.out.println("Response Code : " + responseCode);
-
-			BufferedReader in = new BufferedReader(
-			        new InputStreamReader(con.getInputStream()));
-			String inputLine;
-			StringBuffer response = new StringBuffer();
-
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
-			}
-			in.close();
-
-			//print result
-			System.out.println(response.toString());
-
+	public void sendMessageToDevice(Event e, User u) throws Exception {
+		List<User> eventUsers = new ArrayList<>(e.getUsers());
+		for (int i = 0;i<eventUsers.size();i++){
+			eventUsers.get(i).setImage(null);
 		}
-	
+		
+		Event event = new Event();
+		event.setDateEnd(e.getDateEnd());
+		event.setDateStart(e.getDateStart());
+		event.setDescription(e.getDescription());
+		event.setId(e.getId());
+		event.setImage(null);
+		event.setLocation(e.getLocation());
+		event.setOwnerId(e.getOwnerId());
+		event.setTitle(e.getTitle());
+		event.setUsers(null);
+		e.setImage(null);
+		String eventJSON = new Gson().toJson(e);
+		
+		String url = "https://gcm-http.googleapis.com/gcm/send";
+		URL obj = new URL(url);
+		HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+
+		// add reuqest header
+		con.setRequestMethod("POST");
+		// con.setRequestProperty("User-Agent", USER_AGENT);
+		// con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+		con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+		con.setRequestProperty("Authorization", "key=AIzaSyC6pdNl8PS2jgcV-sxDwlospmXMQa44e7A");
+
+		 String urlParameters = "{\"to\":\"" + db.getUserToken(u.getId()) +
+		 "\", \"data\": {\"id\":\"" + e.getId() + "\"}}";
+		
+
+//		String urlParameters = "{\"to\":\"" + db.getUserToken(u.getId()) + "\", \"data\":" + eventJSON + "}";
+
+		byte[] sendBytes = urlParameters.getBytes("UTF-8");
+		con.setFixedLengthStreamingMode(sendBytes.length);
+
+		// Send post request
+		con.setDoOutput(true);
+		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+		//wr.writeBytes(params.toString()); //orginal
+		wr.write(sendBytes);
+		wr.flush();
+		wr.close();
+
+		int responseCode = con.getResponseCode();
+		System.out.println("\nSending 'POST' request to URL : " + url);
+		System.out.println("Post parameters : " + urlParameters);
+		System.out.println("Response Code : " + responseCode);
+
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+
+		// print result
+		System.out.println(response.toString());
+
+	}
+
 	/**
 	 * This service updates the given event
+	 * 
 	 * @param input
 	 * @return
 	 */
@@ -281,7 +310,7 @@ public class EventsServices {
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Path("/updateEvent")
-	public String updateEvent( InputStream input ) {
+	public String updateEvent(InputStream input) {
 		System.out.println("in updateEvent method");
 		StringBuilder eventJSON = new StringBuilder();
 		try {
@@ -293,20 +322,21 @@ public class EventsServices {
 		} catch (Exception e) {
 			System.out.println("Error Parsing: - ");
 		}
-		
+
 		Gson gson = new Gson();
 		Event event = gson.fromJson(eventJSON.toString(), Event.class);
 		System.out.println(eventJSON);
 		boolean result = db.updateEvent(event);
-		if(result) {
+		if (result) {
 			return "OK";
 		} else {
 			return "notOk";
 		}
 	}
-	
+
 	/**
 	 * This service removes the given event
+	 * 
 	 * @param input
 	 * @return
 	 */
@@ -314,7 +344,7 @@ public class EventsServices {
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Path("/removeEvent")
-	public String removeEvent( InputStream input ) {
+	public String removeEvent(InputStream input) {
 		System.out.println("in removeEvent method");
 		StringBuilder eventJSON = new StringBuilder();
 		try {
@@ -326,15 +356,15 @@ public class EventsServices {
 		} catch (Exception e) {
 			System.out.println("Error Parsing: - ");
 		}
-		
+
 		Gson gson = new Gson();
 		Event event = gson.fromJson(eventJSON.toString(), Event.class);
 		boolean result = db.removeEvent(event);
-		if(result) {
+		if (result) {
 			return "OK";
 		} else {
 			return "notOk";
 		}
 	}
-	
+
 }

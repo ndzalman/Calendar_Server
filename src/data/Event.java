@@ -75,6 +75,13 @@ public class Event {
 	@Column(name="Owner_Id", nullable=false)
 	private int ownerId;
 	
+	
+	/**
+	 * extra data on the event
+	 */
+	@Column( name = "Image")
+    private byte[] image;
+	
     /**
      * Default constructor.initialize an empty event object.
      */
@@ -234,6 +241,16 @@ public class Event {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+	
+	
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 
 	@Override

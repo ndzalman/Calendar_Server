@@ -163,6 +163,7 @@ public class DB {
 		e.setDateEnd(event.getDateEnd());
 		e.setLocation(event.getLocation());
 		e.setUsers(event.getUsers());
+		e.setImage(event.getImage());
 		em.getTransaction().commit();
 		return true;
 	}
@@ -203,6 +204,13 @@ public class DB {
 		Query query = em.createQuery("select e from Event e");
 		Vector<Event> events = (Vector<Event>)query.getResultList();
 		return events;	
+	}
+	
+	public Event getEventsByEventId(int id) {
+		Query query = em.createQuery("select e from Event e where e.id = :id");
+		query.setParameter("id", id);
+		Event event = (Event) query.getSingleResult();
+		return event;	
 	}
 	
 
@@ -298,59 +306,7 @@ public class DB {
 
 	public static void main(String[] args) {
 		DB db = DB.getInstance();
-//		User user = new User();
-//		user.setUserName("anael");
-//		user.setEmail("anaelshomrai@gmail.com");
-//		user.setPassword("123456");
-//		Calendar dateOfBirth = Calendar.getInstance();
-//		dateOfBirth.set(Calendar.YEAR, 1992);
-//		dateOfBirth.set(Calendar.MONTH, 8); // 9 -1 month starts from 0
-//		dateOfBirth.set(Calendar.DAY_OF_MONTH, 9);
-//		user.setDateOfBirth(dateOfBirth);
-		
-//		Event event = new Event();
-//		event.setUser(db.getUser("anaelshomrai@gmail.com"));
-//		event.setDescription("Important");
-//		event.setTitle("Do");
-//		Calendar dateStart = Calendar.getInstance();
-//		event.setDateStart(dateStart);
-//		Calendar dateEnd = Calendar.getInstance();
-//		dateEnd.set(Calendar.HOUR_OF_DAY, 14);
-//		dateEnd.set(Calendar.MINUTE, 22);
-//		dateEnd.set(Calendar.MILLISECOND, 0);
-//		dateEnd.set(Calendar.SECOND, 0);
-//		event.setDateEnd(dateEnd);
-
-		
-//		List<Event> events = new ArrayList<>();
-//		Event event = new Event();
-//		event.setDescription("Important");
-//		event.setTitle("Do Homework");
-//		Calendar dateStart = Calendar.getInstance();
-//		event.setDateStart(dateStart);
-//		Calendar dateEnd = Calendar.getInstance();
-//		dateEnd.set(Calendar.HOUR_OF_DAY, 14);
-//		dateEnd.set(Calendar.MINUTE, 22);
-//		dateEnd.set(Calendar.MILLISECOND, 0);
-//		dateEnd.set(Calendar.SECOND, 0);
-//		event.setDateEnd(dateEnd);
-//		events.add(event);
-//		event = new Event();
-//		event.setTitle("Go to the doctor");
-//		event.setDescription("important");
-//		events.add(event);
-//
-//		user.setEvents(events);
-//		db.insertUser(user);
-		
-//		db.addEvent(event);
-//		db.updateEvent(event);
 
 	}
-
-
-
-
-
 
 }
