@@ -82,6 +82,12 @@ public class Event {
 	@Column( name = "Image")
     private byte[] image;
 	
+	/**
+	 * extra data on the event
+	 */
+	@Column( name = "Reminder")
+    private int reminder;
+	
     /**
      * Default constructor.initialize an empty event object.
      */

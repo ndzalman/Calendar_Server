@@ -58,13 +58,7 @@ public class User{
 	 */
 	@Column( name = "Image")
     private byte[] image;
-	
-	/**
-	 * Date of birth of the user
-	 */
-	@Temporal(TemporalType.DATE) // for saving without time
-    private Calendar dateOfBirth;
-    
+
 //	/**
 //	 * Events of the user, one user can have many events
 //	 */
@@ -97,7 +91,6 @@ public class User{
         this.userName = userName;
         this.email = email;
         this.password = password;
-        this.dateOfBirth = dateOfBirth;
     }
     
     /**
@@ -146,22 +139,6 @@ public class User{
      */
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    /**
-     * Returns the date of birth of the user
-     * @return the date of birth of the user
-     */
-    public Calendar getDateOfBirth() {
-        return dateOfBirth;
-    }
-    
-    /**
-     * Sets the date of birth of the user
-     * @param dateOfBirth the date of birth of the user
-     */
-    public void setDateOfBirth(Calendar dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
     }
 
 //    /**
@@ -289,7 +266,6 @@ public class User{
                 ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
 //                ", events=" + events +
                 '}';
     }
