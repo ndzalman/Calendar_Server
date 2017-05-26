@@ -277,10 +277,14 @@ public class DB {
 	 * @param pushToken
 	 */
 	public void insertTokenToUser( int id, String token ) {
+		if (token == null || token.isEmpty() == true){
+			return;
+		} else{
 		User user = em.find(User.class, id);
 		  em.getTransaction().begin();
 		  user.setToken(token);
 		  em.getTransaction().commit();	
+		}
 	}
 	
 

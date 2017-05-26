@@ -1,2 +1,4 @@
 /build/
 /Insert
+/.apt_generated/
+/target/

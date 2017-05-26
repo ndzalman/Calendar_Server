@@ -173,7 +173,12 @@ public class UserServices {
 	@Path("/insertTokenToUser")
 	public void insertTokenToUser(@QueryParam("id") int id ,@QueryParam("token")String token) {
 		System.out.println("inside attach token user id is: " + id);
-		db.insertTokenToUser(id, token);
+		if (token == null || token.isEmpty() == true){
+			return;
+		} else{
+			System.out.println("inside attach token user token is: " + token);
+			db.insertTokenToUser(id, token);
+		}
 	}
 
 	/**
