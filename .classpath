@@ -28,10 +28,10 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/ashom/git/Cafeteria_Server/WebContent/WEB-INF/lib/eclipselink.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ashom/git/Cafeteria_Server/WebContent/WEB-INF/lib/persistence-api-1.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ashom/git/Cafeteria_Server/WebContent/WEB-INF/lib/javax.persistence.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ashom/git/Cafeteria_Server/WebContent/WEB-INF/lib/javax.ws.rs-api-2.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ashom/git/LimeSurvey/WebContent/WEB-INF/lib/gson-2.2.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/ashom/git/Cafeteria_Server/WebContent/WEB-INF/lib/eclipselink.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/ashom/git/Cafeteria_Server/WebContent/WEB-INF/lib/persistence-api-1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/ashom/git/Cafeteria_Server/WebContent/WEB-INF/lib/javax.persistence.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/ashom/git/Cafeteria_Server/WebContent/WEB-INF/lib/javax.ws.rs-api-2.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/ashom/git/LimeSurvey/WebContent/WEB-INF/lib/gson-2.2.4.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
